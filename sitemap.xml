@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset
+      xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
+            http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
+<!-- created with Free Online Sitemap Generator www.xml-sitemaps.com -->
+
+
+<url>
+  <loc>https://ryouzhe.github.io/</loc>
+  <lastmod>2022-03-29T02:27:26+00:00</lastmod>
+  <priority>1.00</priority>
+</url>
+<url>
+  <loc>https://ryouzhe.github.io/categories/</loc>
+  <lastmod>2022-03-29T02:27:26+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://ryouzhe.github.io/tags/</loc>
+  <lastmod>2022-03-29T02:27:26+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://ryouzhe.github.io/archives/</loc>
+  <lastmod>2022-03-29T02:27:26+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://ryouzhe.github.io/about/</loc>
+  <lastmod>2022-03-29T02:27:26+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://ryouzhe.github.io/posts/PM2/</loc>
+  <lastmod>2022-03-29T02:27:26+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://ryouzhe.github.io/posts/react-13/</loc>
+  <lastmod>2022-03-29T02:27:26+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://ryouzhe.github.io/posts/react-12/</loc>
+  <lastmod>2022-03-29T02:27:26+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://ryouzhe.github.io/posts/react-11/</loc>
+  <lastmod>2022-03-29T02:27:26+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://ryouzhe.github.io/posts/react-10/</loc>
+  <lastmod>2022-03-29T02:27:26+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://ryouzhe.github.io/posts/react-09/</loc>
+  <lastmod>2022-03-29T02:27:26+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://ryouzhe.github.io/posts/react-08/</loc>
+  <lastmod>2022-03-29T02:27:26+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://ryouzhe.github.io/posts/react-07/</loc>
+  <lastmod>2022-03-29T02:27:26+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://ryouzhe.github.io/posts/react-06/</loc>
+  <lastmod>2022-03-29T02:27:26+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://ryouzhe.github.io/posts/react-05/</loc>
+  <lastmod>2022-03-29T02:27:26+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://ryouzhe.github.io/page2/</loc>
+  <lastmod>2022-03-29T02:27:26+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://ryouzhe.github.io/posts/react-04/</loc>
+  <lastmod>2022-03-29T02:27:26+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://ryouzhe.github.io/posts/react-01/</loc>
+  <lastmod>2022-03-29T02:27:26+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://ryouzhe.github.io/tags/react/</loc>
+  <lastmod>2022-03-29T02:27:26+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://ryouzhe.github.io/tags/hooks/</loc>
+  <lastmod>2022-03-29T02:27:26+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://ryouzhe.github.io/tags/gitblog/</loc>
+  <lastmod>2022-03-29T02:27:26+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://ryouzhe.github.io/tags/deploy/</loc>
+  <lastmod>2022-03-29T02:27:26+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://ryouzhe.github.io/tags/jsx/</loc>
+  <lastmod>2022-03-29T02:27:26+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://ryouzhe.github.io/tags/markdown/</loc>
+  <lastmod>2022-03-29T02:27:26+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://ryouzhe.github.io/tags/pm2/</loc>
+  <lastmod>2022-03-29T02:27:26+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://ryouzhe.github.io/categories/deployment/</loc>
+  <lastmod>2022-03-29T02:27:26+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://ryouzhe.github.io/categories/etc/</loc>
+  <lastmod>2022-03-29T02:27:26+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://ryouzhe.github.io/categories/react/</loc>
+  <lastmod>2022-03-29T02:27:26+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://ryouzhe.github.io/posts/react-03/</loc>
+  <lastmod>2022-03-29T02:27:26+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://ryouzhe.github.io/posts/react-02/</loc>
+  <lastmod>2022-03-29T02:27:26+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://ryouzhe.github.io/posts/jsx/</loc>
+  <lastmod>2022-03-29T02:27:26+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://ryouzhe.github.io/posts/post/</loc>
+  <lastmod>2022-03-29T02:27:26+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://ryouzhe.github.io/posts/markdown/</loc>
+  <lastmod>2022-03-29T02:27:26+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+
+
+</urlset>
