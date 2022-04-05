@@ -30,7 +30,7 @@ JWT를 사용하기 위해서 JWT 라이브러리를 먼저 추가한다. JWT �
 
 Security에서 제공하는 formLogin은 x-www-form-urlencoded의 Context-type으로 데이터를 받는다. JSON을 받아서 로그인 처리를 하려면 해당 기능을 비활성화 해줘야 하고 JWT는 세션을 사용하지 않기 때문에 서버를 stateless로 설정해야 한다.
 
-```java :SecurityConfig.java
+```java : SecurityConfig.java
 
     @Configuration
     @EnableWebSecurity
@@ -62,7 +62,7 @@ JWT를 사용할 경우 httpBasic을 disable로 처리하고 Authorization 키 �
 
 이제 Security에서 CORS 문제를 해결해 줘야 한다. CORS Filter를 만들어서 Security Filter Chain에 추가한다.
 
-```java :CorsConfig.java
+```java : CorsConfig.java
 
     @Configuration
     public class CorsConfig {
@@ -82,7 +82,7 @@ JWT를 사용할 경우 httpBasic을 disable로 처리하고 Authorization 키 �
 
 ```
 
-```java :SecurityConfig.java
+```java : SecurityConfig.java
 
     @Configuration
     @EnableWebSecurity
@@ -110,7 +110,7 @@ JWT를 사용할 경우 httpBasic을 disable로 처리하고 Authorization 키 �
 
 Spring Boot로 서버를 사용하면 클라이언트의 요청이 왔을때 Filter Chain으로 요청이 넘어가서 각 Filter에서 요청에 맞는 작업을 진행해서 요청을 처리한다. Filter를 만들때는 ***Filter*** 를 구현화해서 사용한다.
 
-```java :MyFilter1.java
+```java : MyFilter1.java
 
     public class MyFilter1 implements Filter {
 
@@ -126,7 +126,7 @@ Spring Boot로 서버를 사용하면 클라이언트의 요청이 왔을때 Fil
 ***chain.doFilter(reauset, response)*** 를 하지 않으면 해당 필터에서 작업이 종료된다. 해당 라인을 통해 다음 필터로 요청을 넘길 수 있다.
 필터를 등록하려면 Filter Config파일을 설정해서 커스텀 필터를 등록할 수 있다.
 
-```java :FilterConfig.java
+```java : FilterConfig.java
 
     @Configuration
     public class FilterConfig {
@@ -146,7 +146,7 @@ Spring Boot로 서버를 사용하면 클라이언트의 요청이 왔을때 Fil
 
 Filter Config에 등록한 필터는 Security Filter Chain이 끝난 후 필터가 동작한다. Security Filter Chain 사이 또는 먼저 필터를 등록하기 위해서는 Security Filter Chain에 사용할 필터를 등록해야 한다. Security Filter Chain에 필터를 등록하는 방법은 아래와 같다.
 
-```java :SecurityConfig.java
+```java : SecurityConfig.java
 
     @Configuration
     @EnableWebSecurity
@@ -174,7 +174,7 @@ JWT를 발행하기위해 먼저 로그인 처리를 해야한다. 현재 Securi
 
 JWTAuthenticationFilter에서는 attemptAuthentication 메소드를 오버라이드해서 클라이언트의 요청을 받아 로그인을 처리한다. 로그인 완료 후 Authentication 객체를 리턴하면 Authentication이 시큐리티 세션에 저장된다. attemptAuthentication 메소드가 정상적으로 종료되면 successfulAuthentication 메소드가 실행된다. successfulAuthentication 메소드도 오버라이드해서 이 메소드에서 JWT 토큰을 만들고, response의 header에 담아주면 된다.
 
-```java :JwtAuthenticationFilter.java
+```java : JwtAuthenticationFilter.java
 
     // 클라이언트가 username, password를 담아 Login 요청을 함
     // UsernamePasswordAuthenticationFilter 동작
@@ -237,7 +237,7 @@ JWTAuthenticationFilter에서는 attemptAuthentication 메소드를 오버라이
 클라이언트가 로그인 후 서버에게 받은 response의 header에 Authorization이 들어있으면 제대로 JWT 토큰을 받아온 것이다.
 이제 SecurityConfig에서 JWTAuthenticationFilter를 등록하자.
 
-```java :SecurityConfig.java
+```java : SecurityConfig.java
 
     @Configuration
     @EnableWebSecurity
@@ -268,7 +268,7 @@ JwtAuthenticationFilter는 UsernamePasswordAuthenticationFilter를 상속받았�
 로그인이 완료된 클라이언트가 권한이 필요한 페이지를 요청할 때 서버는 클라이언트의 JWT를 확인해서 해당 리소스에 접근할 권한이 있는지 확인해야 한다.
 따라서 JWT 검증을 하기 위한 JWTAuthorizationFilter가 필요하다.
 
-```java :JwtAuthrizationFilter.java
+```java : JwtAuthrizationFilter.java
 
     // 권한이나 인증이 필요한 주소에대한 요청이 오면
     // BasicAuthenticationFilter를 거치게 된다.
@@ -320,7 +320,7 @@ JWT를 전달받은 서버는 이 토큰이 유효한지를 확인해야 한다.
 
 이제 JwtAuthorizationFilter를 Security Filter Chain에 등록해 주면 된다.
 
-```java :SecurityConfig.java
+```java : SecurityConfig.java
 
     @Configuration
     @EnableWebSecurity
