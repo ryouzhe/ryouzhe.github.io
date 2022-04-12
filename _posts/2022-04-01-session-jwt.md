@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Session & JWT
+title: Session and JWT
 date: 2022-03-31
 categories: [ETC]
 tag: [Session, JWT]
