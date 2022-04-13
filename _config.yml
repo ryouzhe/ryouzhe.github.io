@@ -21,7 +21,7 @@ timezone: Asia/Seoul
 # jekyll-seo-tag settings › https://github.com/jekyll/jekyll-seo-tag/blob/master/docs/usage.md
 # ↓ --------------------------
 
-title: Roy's Daddy                          # the main title
+title: Roypapa                         # the main title
 
 tagline: Developer??   # it will display as the sub-title
 
@@ -40,7 +40,7 @@ twitter:
 social:
   # Change to your full name.
   # It will be displayed as the default author of the posts and the copyright owner in the Footer
-  name: Roy's Daddy
+  name: Roypapa
   email: sjh3183@gmail.com             # change to your email address
   links:
     # The first element serves as the copyright owner's link
