@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Javascript 브라우저 렌더링
-date: 2022-07-13
+date: 2022-07-20
 categories: [Javascript]
 tag: [javascript]
 ---
