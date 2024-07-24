@@ -1,0 +1,531 @@
+<!DOCTYPE html><html lang="en" ><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><meta name="generator" content="Jekyll v4.2.1" /><meta property="og:title" content="Spring boot로 JWT 사용하기" /><meta property="og:locale" content="en" /><meta name="description" content="JWT 프로젝트 세팅" /><meta property="og:description" content="JWT 프로젝트 세팅" /><link rel="canonical" href="https://ryouzhe.github.io/posts/springboot-jwt/" /><meta property="og:url" content="https://ryouzhe.github.io/posts/springboot-jwt/" /><meta property="og:site_name" content="Roypapa" /><meta property="og:type" content="article" /><meta property="article:published_time" content="2022-04-05T00:00:00+09:00" /><meta name="twitter:card" content="summary" /><meta property="twitter:title" content="Spring boot로 JWT 사용하기" /><meta name="twitter:site" content="@" /><meta name="google-site-verification" content="Nukb_PiZktlp0Dn3kezzrMjS24qb73lU7zne0VoVZ3I" /> <script type="application/ld+json"> {"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2022-04-17T23:46:42+09:00","datePublished":"2022-04-05T00:00:00+09:00","description":"JWT 프로젝트 세팅","headline":"Spring boot로 JWT 사용하기","mainEntityOfPage":{"@type":"WebPage","@id":"https://ryouzhe.github.io/posts/springboot-jwt/"},"url":"https://ryouzhe.github.io/posts/springboot-jwt/"}</script><title>Spring boot로 JWT 사용하기 | Roypapa</title><link rel="apple-touch-icon" sizes="180x180" href="/assets/img/favicons/apple-touch-icon.png"><link rel="icon" type="image/png" sizes="32x32" href="/assets/img/favicons/favicon-32x32.png"><link rel="icon" type="image/png" sizes="16x16" href="/assets/img/favicons/favicon-16x16.png"><link rel="manifest" href="/assets/img/favicons/site.webmanifest"><link rel="shortcut icon" href="/assets/img/favicons/favicon.ico"><meta name="apple-mobile-web-app-title" content="Roypapa"><meta name="application-name" content="Roypapa"><meta name="msapplication-TileColor" content="#da532c"><meta name="msapplication-config" content="/assets/img/favicons/browserconfig.xml"><meta name="theme-color" content="#ffffff"><link rel="preconnect" href="https://fonts.googleapis.com" ><link rel="dns-prefetch" href="https://fonts.googleapis.com" ><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="dns-prefetch" href="https://fonts.gstatic.com" crossorigin><link rel="preconnect" href="https://fonts.googleapis.com" ><link rel="dns-prefetch" href="https://fonts.googleapis.com" ><link rel="preconnect" href="https://cdn.jsdelivr.net" ><link rel="dns-prefetch" href="https://cdn.jsdelivr.net" ><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lato&family=Source+Sans+Pro:wght@400;600;700;900&display=swap"><link rel="preconnect" href="https://www.google-analytics.com" crossorigin="use-credentials"><link rel="dns-prefetch" href="https://www.google-analytics.com"><link rel="preconnect" href="https://www.googletagmanager.com" crossorigin="anonymous"><link rel="dns-prefetch" href="https://www.googletagmanager.com"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.11.2/css/all.min.css"><link rel="stylesheet" href="/assets/css/style.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@1.0.1/dist/bootstrap-toc.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/magnific-popup@1/dist/magnific-popup.min.css"> <script src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script> <script type="text/javascript"> class ModeToggle { static get MODE_KEY() { return "mode"; } static get MODE_ATTR() { return "data-mode"; } static get DARK_MODE() { return "dark"; } static get LIGHT_MODE() { return "light"; } static get ID() { return "mode-toggle"; } constructor() { if (this.hasMode) { if (this.isDarkMode) { if (!this.isSysDarkPrefer) { this.setDark(); } } else { if (this.isSysDarkPrefer) { this.setLight(); } } } let self = this; /* always follow the system prefers */ this.sysDarkPrefers.addEventListener("change", () => { if (self.hasMode) { if (self.isDarkMode) { if (!self.isSysDarkPrefer) { self.setDark(); } } else { if (self.isSysDarkPrefer) { self.setLight(); } } self.clearMode(); } self.notify(); }); } /* constructor() */ get sysDarkPrefers() { return window.matchMedia("(prefers-color-scheme: dark)"); } get isSysDarkPrefer() { return this.sysDarkPrefers.matches; } get isDarkMode() { return this.mode === ModeToggle.DARK_MODE; } get isLightMode() { return this.mode === ModeToggle.LIGHT_MODE; } get hasMode() { return this.mode != null; } get mode() { return sessionStorage.getItem(ModeToggle.MODE_KEY); } /* get the current mode on screen */ get modeStatus() { if (this.isDarkMode || (!this.hasMode && this.isSysDarkPrefer)) { return ModeToggle.DARK_MODE; } else { return ModeToggle.LIGHT_MODE; } } setDark() { $('html').attr(ModeToggle.MODE_ATTR, ModeToggle.DARK_MODE); sessionStorage.setItem(ModeToggle.MODE_KEY, ModeToggle.DARK_MODE); } setLight() { $('html').attr(ModeToggle.MODE_ATTR, ModeToggle.LIGHT_MODE); sessionStorage.setItem(ModeToggle.MODE_KEY, ModeToggle.LIGHT_MODE); } clearMode() { $('html').removeAttr(ModeToggle.MODE_ATTR); sessionStorage.removeItem(ModeToggle.MODE_KEY); } /* Notify another plugins that the theme mode has changed */ notify() { window.postMessage({ direction: ModeToggle.ID, message: this.modeStatus }, "*"); } } /* ModeToggle */ const toggle = new ModeToggle(); function flipMode() { if (toggle.hasMode) { if (toggle.isSysDarkPrefer) { if (toggle.isLightMode) { toggle.clearMode(); } else { toggle.setLight(); } } else { if (toggle.isDarkMode) { toggle.clearMode(); } else { toggle.setDark(); } } } else { if (toggle.isSysDarkPrefer) { toggle.setLight(); } else { toggle.setDark(); } } toggle.notify(); } /* flipMode() */ </script><body data-spy="scroll" data-target="#toc" data-topbar-visible="true"><div id="sidebar" class="d-flex flex-column align-items-end"><div class="profile-wrapper text-center"><div id="avatar"> <a href="/" alt="avatar" class="mx-auto"> <img src=" /assets/img/roy_main.jpg " alt="avatar" onerror="this.style.display='none'"> </a></div><div class="site-title mt-3"> <a href="/">Roypapa</a></div><div class="site-subtitle font-italic">Developer??</div></div><ul class="w-100"><li class="nav-item"> <a href="/" class="nav-link"> <i class="fa-fw fas fa-home ml-xl-3 mr-xl-3 unloaded"></i> <span>HOME</span> </a><li class="nav-item"> <a href="/categories/" class="nav-link"> <i class="fa-fw fas fa-stream ml-xl-3 mr-xl-3 unloaded"></i> <span>CATEGORIES</span> </a><li class="nav-item"> <a href="/tags/" class="nav-link"> <i class="fa-fw fas fa-tag ml-xl-3 mr-xl-3 unloaded"></i> <span>TAGS</span> </a><li class="nav-item"> <a href="/archives/" class="nav-link"> <i class="fa-fw fas fa-archive ml-xl-3 mr-xl-3 unloaded"></i> <span>ARCHIVES</span> </a><li class="nav-item"> <a href="/about/" class="nav-link"> <i class="fa-fw fas fa-info-circle ml-xl-3 mr-xl-3 unloaded"></i> <span>ABOUT</span> </a></ul><div class="sidebar-bottom mt-auto d-flex flex-wrap justify-content-center align-items-center"> <button class="mode-toggle btn" aria-label="Switch Mode"> <i class="fas fa-adjust"></i> </button> <span class="icon-border"></span> <a href="https://github.com/ryouzhe" aria-label="github" target="_blank" rel="noopener"> <i class="fab fa-github"></i> </a> <a href="https://twitter.com/" aria-label="twitter" target="_blank" rel="noopener"> <i class="fab fa-twitter"></i> </a> <a href=" javascript:location.href = 'mailto:' + ['sjh3183','gmail.com'].join('@')" aria-label="email" > <i class="fas fa-envelope"></i> </a> <a href="/feed.xml" aria-label="rss" > <i class="fas fa-rss"></i> </a></div></div><div id="topbar-wrapper" class="row justify-content-center"><div id="topbar" class="col-11 d-flex h-100 align-items-center justify-content-between"> <span id="breadcrumb"> <span> <a href="/"> Home </a> </span> <span>Spring boot로 JWT 사용하기</span> </span> <i id="sidebar-trigger" class="fas fa-bars fa-fw"></i><div id="topbar-title"> Post</div><i id="search-trigger" class="fas fa-search fa-fw"></i> <span id="search-wrapper" class="align-items-center"> <i class="fas fa-search fa-fw"></i> <input class="form-control" id="search-input" type="search" aria-label="search" autocomplete="off" placeholder="Search..."> </span> <span id="search-cancel" >Cancel</span></div></div><div id="main-wrapper"><div id="main"><div class="row"><div id="core-wrapper" class="col-12 col-lg-11 col-xl-8"><div class="post pl-1 pr-1 pl-sm-2 pr-sm-2 pl-md-4 pr-md-4"><h1 data-toc-skip>Spring boot로 JWT 사용하기</h1><div class="post-meta text-muted"><div> By <em> <a href="https://github.com/ryouzhe">Roypapa</a> </em></div><div class="d-flex"><div> <span> Posted <em class="timeago" data-ts="1649084400" data-toggle="tooltip" data-placement="bottom" data-tooltip-df="llll" > 2022-04-05 </em> </span> <span> Updated <em class="timeago" data-ts="1650206802" data-toggle="tooltip" data-placement="bottom" data-tooltip-df="llll" > 2022-04-17 </em> </span> <span class="readtime" data-toggle="tooltip" data-placement="bottom" title="2702 words"> <em>15 min</em> read</span></div></div></div><div class="post-content"><h2 id="jwt-프로젝트-세팅"><span class="mr-2">JWT 프로젝트 세팅</span><a href="#jwt-프로젝트-세팅" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h2></h2><p>JWT를 사용하기 위해서 JWT 라이브러리를 먼저 추가한다. JWT 토큰을 직접 만들 수도 있지만 라이브러리를 활용해서 편하게 사용할 수 있다.</p><h4 id="maven"><span class="mr-2">Maven</span><a href="#maven" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h4></h4><div class="language-java highlighter-rouge"><div class="code-header"> <span data-label-text="Java"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+</pre><td class="rouge-code"><pre>    <span class="o">&lt;</span><span class="n">dependency</span><span class="o">&gt;</span>
+        <span class="o">&lt;</span><span class="n">groupId</span><span class="o">&gt;</span><span class="n">com</span><span class="o">.</span><span class="na">auth0</span><span class="o">&lt;/</span><span class="n">groupId</span><span class="o">&gt;</span>
+        <span class="o">&lt;</span><span class="n">artifactId</span><span class="o">&gt;</span><span class="n">java</span><span class="o">-</span><span class="n">jwt</span><span class="o">&lt;/</span><span class="n">artifactId</span><span class="o">&gt;</span>
+        <span class="o">&lt;</span><span class="n">version</span><span class="o">&gt;</span><span class="mf">3.19</span><span class="o">.</span><span class="mi">1</span><span class="o">&lt;/</span><span class="n">version</span><span class="o">&gt;</span>
+    <span class="o">&lt;/</span><span class="n">dependency</span><span class="o">&gt;</span>
+</pre></table></code></div></div><h4 id="gradle"><span class="mr-2">Gradle</span><a href="#gradle" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h4></h4><div class="language-java highlighter-rouge"><div class="code-header"> <span data-label-text="Java"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre><td class="rouge-code"><pre>    <span class="n">implementation</span> <span class="err">'</span><span class="n">com</span><span class="o">.</span><span class="na">auth0</span><span class="o">:</span><span class="n">java</span><span class="o">-</span><span class="nl">jwt:</span><span class="mf">3.19</span><span class="o">.</span><span class="mi">1</span><span class="err">'</span>
+</pre></table></code></div></div><h2 id="jwt-security-세팅"><span class="mr-2">JWT Security 세팅</span><a href="#jwt-security-세팅" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h2></h2><p>Security에서 제공하는 formLogin은 x-www-form-urlencoded의 Context-type으로 데이터를 받는다. JSON을 받아서 로그인 처리를 하려면 해당 기능을 비활성화 해줘야 하고 JWT는 세션을 사용하지 않기 때문에 서버를 stateless로 설정해야 한다.</p><div class="language-java highlighter-rouge"><div class="code-header"> <span data-label-text="Java"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+</pre><td class="rouge-code"><pre>
+    <span class="c1">//SecurityConfig.java</span>
+    <span class="nd">@Configuration</span>
+    <span class="nd">@EnableWebSecurity</span>
+
+    <span class="kd">public</span> <span class="kd">class</span> <span class="nc">SecurityConfig</span> <span class="kd">extends</span> <span class="nc">WebSecurityConfigurerAdapter</span> <span class="o">{</span>
+
+        <span class="nd">@Override</span>
+        <span class="kd">protected</span> <span class="kt">void</span> <span class="nf">configure</span><span class="o">(</span><span class="nc">HttpSecurity</span> <span class="n">http</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">Exception</span> <span class="o">{</span>
+            <span class="n">http</span><span class="o">.</span><span class="na">csrf</span><span class="o">().</span><span class="na">disable</span><span class="o">();</span>
+            <span class="n">http</span><span class="o">.</span><span class="na">sessionManagement</span><span class="o">().</span><span class="na">sessionCreationPolicy</span><span class="o">(</span><span class="nc">SessionCreationPolicy</span><span class="o">.</span><span class="na">STATELESS</span><span class="o">)</span> <span class="c1">// 세션을 사용하지 않는다</span>
+                <span class="o">.</span><span class="na">and</span><span class="o">()</span>
+                <span class="o">.</span><span class="na">formLogin</span><span class="o">().</span><span class="na">disable</span><span class="o">()</span>                                                      
+                <span class="o">.</span><span class="na">httpBasic</span><span class="o">().</span><span class="na">disable</span><span class="o">()</span>                                                       
+                <span class="o">.</span><span class="na">authorizeRequests</span><span class="o">()</span>
+                <span class="o">.</span><span class="na">antMatchers</span><span class="o">(</span><span class="s">"/api/v1/user/**"</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">access</span><span class="o">(</span><span class="s">"hasRole('ROLE_USER') or hasRole('ROLE_MANAGER') or hasRole('ROLE_ADMIN')"</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">antMatchers</span><span class="o">(</span><span class="s">"/api/v1/manager/**"</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">access</span><span class="o">(</span><span class="s">"hasRole('ROLE_MANAGER') or hasRole('ROLE_ADMIN')"</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">antMatchers</span><span class="o">(</span><span class="s">"/api/v1/admin/**"</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">access</span><span class="o">(</span><span class="s">"hasRole('ROLE_ADMIN')"</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">anyRequest</span><span class="o">().</span><span class="na">permitAll</span><span class="o">();</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+
+</pre></table></code></div></div><p>httpBasic 방식은 header에 Authorization 키 값에 유저를 식별할 수 있는 정보를 담아서 서버에 요청을 하는 방식이다. 이 경우 유저를 매 요청 시 확인하므로 쿠키/세션이 필요하지 않다. 다만 http 방식은 header 정보를 암호화가 안되서 https 방식으로 사용해야 한다. JWT를 사용할 경우 httpBasic을 disable로 처리하고 Authorization 키 값에 JWT 토큰을 담아서 보낸다. 이 방식을 Bearer 인증 방식이라 한다.</p><p>이제 Security에서 CORS 문제를 해결해 줘야 한다. CORS Filter를 만들어서 Security Filter Chain에 추가한다.</p><div class="language-java highlighter-rouge"><div class="code-header"> <span data-label-text="Java"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+</pre><td class="rouge-code"><pre>
+    <span class="c1">//CorsConfig.java</span>
+    <span class="nd">@Configuration</span>
+    <span class="kd">public</span> <span class="kd">class</span> <span class="nc">CorsConfig</span> <span class="o">{</span>
+
+        <span class="nd">@Bean</span>
+        <span class="kd">public</span> <span class="nc">CorsFilter</span> <span class="nf">corsFilter</span><span class="o">()</span> <span class="o">{</span>
+            <span class="nc">UrlBasedCorsConfigurationSource</span> <span class="n">source</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">UrlBasedCorsConfigurationSource</span><span class="o">();</span>
+            <span class="nc">CorsConfiguration</span> <span class="n">config</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">CorsConfiguration</span><span class="o">();</span>
+            <span class="n">config</span><span class="o">.</span><span class="na">setAllowCredentials</span><span class="o">(</span><span class="kc">true</span><span class="o">);</span>   <span class="c1">// 내 서버가 응답할 때 josn을 자바스크립트에서 처리할 수 있게 할지를 설정하는 것</span>
+            <span class="n">config</span><span class="o">.</span><span class="na">addAllowedOrigin</span><span class="o">(</span><span class="s">"*"</span><span class="o">);</span>       <span class="c1">// 모든 ip에 응답을 허용하겠다</span>
+            <span class="n">config</span><span class="o">.</span><span class="na">addAllowedHeader</span><span class="o">(</span><span class="s">"*"</span><span class="o">);</span>       <span class="c1">// 모든 header에 응답을 허용하겠다</span>
+            <span class="n">config</span><span class="o">.</span><span class="na">addAllowedMethod</span><span class="o">(</span><span class="s">"*"</span><span class="o">);</span>       <span class="c1">// 모든 post, get, put, delete, patch 요청을 허용하겠다</span>
+            <span class="n">source</span><span class="o">.</span><span class="na">registerCorsConfiguration</span><span class="o">(</span><span class="s">"/api/**"</span><span class="o">,</span> <span class="n">config</span><span class="o">);</span>
+            <span class="k">return</span> <span class="k">new</span> <span class="nf">CorsFilter</span><span class="o">(</span><span class="n">source</span><span class="o">);</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+
+</pre></table></code></div></div><div class="language-java highlighter-rouge"><div class="code-header"> <span data-label-text="Java"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+</pre><td class="rouge-code"><pre>
+    <span class="c1">//SecurityConfig.java</span>
+    <span class="nd">@Configuration</span>
+    <span class="nd">@EnableWebSecurity</span>
+    <span class="nd">@RequiredArgsConstructor</span>
+    <span class="kd">public</span> <span class="kd">class</span> <span class="nc">SecurityConfig</span> <span class="kd">extends</span> <span class="nc">WebSecurityConfigurerAdapter</span> <span class="o">{</span>
+
+        <span class="kd">private</span> <span class="kd">final</span> <span class="nc">CorsConfig</span> <span class="n">corsConfig</span><span class="o">;</span>
+        
+        <span class="nd">@Override</span>
+        <span class="kd">protected</span> <span class="kt">void</span> <span class="nf">configure</span><span class="o">(</span><span class="nc">HttpSecurity</span> <span class="n">http</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">Exception</span> <span class="o">{</span>
+            <span class="n">http</span><span class="o">.</span><span class="na">csrf</span><span class="o">().</span><span class="na">disable</span><span class="o">();</span>
+            <span class="n">http</span><span class="o">.</span><span class="na">sessionManagement</span><span class="o">().</span><span class="na">sessionCreationPolicy</span><span class="o">(</span><span class="nc">SessionCreationPolicy</span><span class="o">.</span><span class="na">STATELESS</span><span class="o">)</span> <span class="c1">// 세션을 사용하지 않는다</span>
+                <span class="o">.</span><span class="na">and</span><span class="o">()</span>
+                <span class="o">.</span><span class="na">addFilter</span><span class="o">(</span><span class="n">corsFilter</span><span class="o">)</span>  <span class="c1">// @CrossOrigin(인증X), 시큐리티 필터에 등록 인증(O)</span>
+                <span class="o">.</span><span class="na">formLogin</span><span class="o">().</span><span class="na">disable</span><span class="o">()</span>
+                <span class="o">...</span>   
+        <span class="o">}</span>
+    <span class="o">}</span>
+
+</pre></table></code></div></div><h2 id="jwt-사용하기"><span class="mr-2">JWT 사용하기</span><a href="#jwt-사용하기" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h2></h2><h4 id="spring-filter-등록"><span class="mr-2">Spring Filter 등록</span><a href="#spring-filter-등록" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h4></h4><p>Spring Boot로 서버를 사용하면 클라이언트의 요청이 왔을때 Filter Chain으로 요청이 넘어가서 각 Filter에서 요청에 맞는 작업을 진행해서 요청을 처리한다. Filter를 만들때는 <strong><em>Filter</em></strong> 를 구현화해서 사용한다.</p><div class="language-java highlighter-rouge"><div class="code-header"> <span data-label-text="Java"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+</pre><td class="rouge-code"><pre>
+    <span class="c1">//MyFilter1.java</span>
+    <span class="kd">public</span> <span class="kd">class</span> <span class="nc">MyFilter1</span> <span class="kd">implements</span> <span class="nc">Filter</span> <span class="o">{</span>
+
+        <span class="nd">@Override</span>
+        <span class="kd">public</span> <span class="kt">void</span> <span class="nf">doFilter</span><span class="o">(</span><span class="nc">ServletRequest</span> <span class="n">request</span><span class="o">,</span> <span class="nc">ServletResponse</span> <span class="n">response</span><span class="o">,</span> <span class="nc">FilterChain</span> <span class="n">chain</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">IOException</span><span class="o">,</span> <span class="nc">ServletException</span> <span class="o">{</span>
+            <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"MyFilter1"</span><span class="o">);</span>
+            <span class="n">chain</span><span class="o">.</span><span class="na">doFilter</span><span class="o">(</span><span class="n">request</span><span class="o">,</span> <span class="n">response</span><span class="o">);</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+
+</pre></table></code></div></div><p><strong><em>chain.doFilter(reauset, response)</em></strong> 를 하지 않으면 해당 필터에서 작업이 종료된다. 해당 라인을 통해 다음 필터로 요청을 넘길 수 있다. 필터를 등록하려면 Filter Config파일을 설정해서 커스텀 필터를 등록할 수 있다.</p><div class="language-java highlighter-rouge"><div class="code-header"> <span data-label-text="Java"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+</pre><td class="rouge-code"><pre>
+    <span class="c1">//FilterConfig.java</span>
+    <span class="nd">@Configuration</span>
+    <span class="kd">public</span> <span class="kd">class</span> <span class="nc">FilterConfig</span> <span class="o">{</span>
+
+        <span class="nd">@Bean</span>
+        <span class="kd">public</span> <span class="nc">FilterRegistrationBean</span><span class="o">&lt;</span><span class="nc">MyFilter1</span><span class="o">&gt;</span> <span class="nf">filter1</span><span class="o">()</span> <span class="o">{</span>
+            <span class="nc">FilterRegistrationBean</span><span class="o">&lt;</span><span class="nc">Myfilter1</span><span class="o">&gt;</span> <span class="nf">filter1</span><span class="o">()</span> <span class="o">{</span>
+                <span class="nc">FilterRegistrationBean</span><span class="o">&lt;</span><span class="nc">MyFilter1</span><span class="o">&gt;</span> <span class="n">bean</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">FilterRegistrationBean</span><span class="o">&lt;&gt;(</span><span class="k">new</span> <span class="nc">MyFilter1</span><span class="o">());</span>
+                <span class="n">bean</span><span class="o">.</span><span class="na">addUrlPatterns</span><span class="o">(</span><span class="s">"/*"</span><span class="o">);</span>  <span class="c1">// 필터가 동작할 Url 패턴</span>
+                <span class="n">bean</span><span class="o">.</span><span class="na">setOrder</span><span class="o">(</span><span class="mi">0</span><span class="o">);</span>           <span class="c1">// 필터 동작 순서</span>
+                <span class="k">return</span> <span class="n">bean</span><span class="o">;</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+
+</pre></table></code></div></div><p>Filter Config에 등록한 필터는 Security Filter Chain이 끝난 후 필터가 동작한다. Security Filter Chain 사이 또는 먼저 필터를 등록하기 위해서는 Security Filter Chain에 사용할 필터를 등록해야 한다. Security Filter Chain에 필터를 등록하는 방법은 아래와 같다.</p><div class="language-java highlighter-rouge"><div class="code-header"> <span data-label-text="Java"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+</pre><td class="rouge-code"><pre>
+    <span class="c1">//SecurityConfig.java</span>
+    <span class="nd">@Configuration</span>
+    <span class="nd">@EnableWebSecurity</span>
+    <span class="nd">@RequiredArgsConstructor</span>
+    <span class="kd">public</span> <span class="kd">class</span> <span class="nc">SecurityConfig</span> <span class="kd">extends</span> <span class="nc">WebSecurityConfigurerAdapter</span> <span class="o">{</span>
+
+        <span class="kd">private</span> <span class="kd">final</span> <span class="nc">CorsConfig</span> <span class="n">corsConfig</span><span class="o">;</span>
+        
+        <span class="nd">@Override</span>
+        <span class="kd">protected</span> <span class="kt">void</span> <span class="nf">configure</span><span class="o">(</span><span class="nc">HttpSecurity</span> <span class="n">http</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">Exception</span> <span class="o">{</span>
+            <span class="n">http</span><span class="o">.</span><span class="na">addFilterBefore</span><span class="o">(</span><span class="k">new</span> <span class="nc">MyFilter</span><span class="o">(),</span> <span class="nc">BasicAuthenticationFilter</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+            <span class="n">http</span><span class="o">.</span><span class="na">csrf</span><span class="o">().</span><span class="na">disable</span><span class="o">();</span>
+            <span class="n">http</span><span class="o">.</span><span class="na">sessionManagement</span><span class="o">().</span><span class="na">sessionCreationPolicy</span><span class="o">(</span><span class="nc">SessionCreationPolicy</span><span class="o">.</span><span class="na">STATELESS</span><span class="o">)</span> <span class="c1">// 세션을 사용하지 않는다</span>
+            <span class="o">...</span>   
+        <span class="o">}</span>
+    <span class="o">}</span>
+
+</pre></table></code></div></div><p>Security Filter에 등록할 경우 <strong><em>addFilterBefore() 또는 addFilterAfter()</em></strong> 를 사용한 한다. Security Filter Chain에서 어떤 필터 전후로 등록할지 명시해 줘야한다.</p><h4 id="jwt를-위한-로그인-처리"><span class="mr-2">JWT를 위한 로그인 처리</span><a href="#jwt를-위한-로그인-처리" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h4></h4><p>JWT를 발행하기위해 먼저 로그인 처리를 해야한다. 현재 SecurityConfig에서 Security Login을 비활성화로 설정해뒀기 때문에 클라이언트가 Login요청을 보내면 직접 로그인 처리를 해야한다. 스프링 시큐리티에서는 Login요청이 오면 <strong><em>UsernamePasswordAuthenticationFilter</em></strong> 에서 로그인 처리를 한다. 따라서 직접 로그인 처리를 하려면 UsernamePasswordAuthenticationFilter를 상속받은 JWTAuthenticationFilter를 만들어서 처리해야 한다.</p><p>JWTAuthenticationFilter에서는 attemptAuthentication 메소드를 오버라이드해서 클라이언트의 요청을 받아 로그인을 처리한다. 로그인 완료 후 Authentication 객체를 리턴하면 Authentication이 시큐리티 세션에 저장된다. attemptAuthentication 메소드가 정상적으로 종료되면 successfulAuthentication 메소드가 실행된다. successfulAuthentication 메소드도 오버라이드해서 이 메소드에서 JWT 토큰을 만들고, response의 header에 담아주면 된다.</p><div class="language-java highlighter-rouge"><div class="code-header"> <span data-label-text="Java"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+</pre><td class="rouge-code"><pre>
+    <span class="c1">//JwtAuthenticationFilter.java</span>
+
+    <span class="c1">// 클라이언트가 username, password를 담아 Login 요청을 함</span>
+    <span class="c1">// UsernamePasswordAuthenticationFilter 동작</span>
+    
+    <span class="nd">@RequiredArgsConstructor</span>
+    <span class="kd">public</span> <span class="kd">class</span> <span class="nc">JwtAuthenticationFilter</span> <span class="kd">extends</span> <span class="nc">UsernamePasswordAuthenticationFilter</span> <span class="o">{</span>
+        <span class="kd">private</span> <span class="kd">final</span> <span class="nc">AuthenticationManager</span> <span class="n">authenticationManager</span><span class="o">;</span>
+
+        <span class="c1">// /login 요청을 하면 로그인 시도를 위해서 실행되는 함수</span>
+        <span class="nd">@Override</span>
+        <span class="kd">public</span> <span class="nc">Authentication</span> <span class="nf">attemptAuthentication</span><span class="o">(</span><span class="nc">HttpServletRequest</span> <span class="n">request</span><span class="o">,</span> <span class="nc">HttpServletResponse</span> <span class="n">response</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">AuthenticationException</span> <span class="o">{</span>
+            <span class="c1">// 1. username, password 받아서</span>
+            <span class="k">try</span> <span class="o">{</span>
+                <span class="nc">ObjectMapper</span> <span class="n">om</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ObjectMapper</span><span class="o">();</span>
+                <span class="nc">User</span> <span class="n">user</span> <span class="o">=</span> <span class="n">om</span><span class="o">.</span><span class="na">readValue</span><span class="o">(</span><span class="n">request</span><span class="o">.</span><span class="na">getInputStream</span><span class="o">(),</span> <span class="nc">User</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+
+                <span class="nc">UsernamePasswordAuthenticationToken</span> <span class="n">authenticationToken</span> <span class="o">=</span>
+                    <span class="k">new</span> <span class="nf">UsernamePasswordAuthenticationToken</span><span class="o">(</span><span class="n">user</span><span class="o">.</span><span class="na">getUsername</span><span class="o">(),</span> <span class="n">user</span><span class="o">.</span><span class="na">getPassword</span><span class="o">());</span>    <span class="c1">// Longin을 위해 토큰 생성</span>
+                
+                <span class="c1">// PrincipalDetailsService의 loadUserByUsername() 함수가 실행됨</span>
+                <span class="c1">// authenticationManager를 통해 로그인 인증을 진행하고</span>
+                <span class="c1">// authentication에 로그인한 정보가 담긴다. </span>
+                <span class="nc">Authentication</span> <span class="n">authentication</span> <span class="o">=</span> <span class="n">authenticationManager</span><span class="o">.</span><span class="na">authenticate</span><span class="o">(</span><span class="n">authenticationToken</span><span class="o">);</span>
+                
+                <span class="c1">// 로그인 완료된 건지 확인 </span>
+                <span class="c1">// PrincipalDetails principalDetails = (PrincipalDetails) authentication.getPrincipal();</span>
+                <span class="c1">// System.out.println(principalDetails.getUser().getUsername());  </span>
+
+                <span class="c1">// authentication 객체가 세션에 저장됨 =&gt; 로그인 되었다는 뜻</span>
+                <span class="c1">// authentication 리턴을 하면 세션에 저장되고 security가 권한관리를 해주게 된다.</span>
+                <span class="k">return</span> <span class="n">authentication</span><span class="o">;</span>
+            <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="nc">IOException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+                <span class="n">e</span><span class="o">.</span><span class="na">printStackTrace</span><span class="o">();</span>
+            <span class="o">}</span>
+
+            <span class="n">reutnr</span> <span class="kc">null</span><span class="o">;</span>
+        <span class="o">}</span>
+
+        <span class="c1">// attemptAuthentication 실행 후 인증이 정상적으로 되었으면 successfulAuthentication 함수가 실행됨</span>
+        <span class="c1">// JWT 토큰을 만들어서 request 요청한 사용자에게 JWT토큰을 respose 해주면 됨</span>
+        <span class="nd">@Override</span>
+        <span class="kd">protected</span> <span class="kt">void</span> <span class="nf">successfulAuthentication</span><span class="o">(</span><span class="nc">HttpServletRequest</span> <span class="n">request</span><span class="o">,</span> <span class="nc">HttpServletResponse</span> <span class="n">response</span><span class="o">,</span> <span class="nc">FilterChain</span> <span class="n">chain</span><span class="o">,</span> <span class="nc">Authentication</span> <span class="n">authResult</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">IOException</span><span class="o">,</span> <span class="nc">ServletException</span> <span class="o">{</span>
+            <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"successfulAuthentication 실행됨: 인증이 완료되었다는 뜻"</span><span class="o">);</span>
+            <span class="nc">PrincipalDetails</span> <span class="n">principalDetails</span> <span class="o">=</span> <span class="o">(</span><span class="nc">PrincipalDetails</span><span class="o">)</span> <span class="n">authResult</span><span class="o">.</span><span class="na">getPrincipal</span><span class="o">();</span>
+
+            <span class="c1">// RSA방식은 아니고 Hash 암호방식</span>
+            <span class="nc">String</span> <span class="n">jwtToken</span> <span class="o">=</span> <span class="no">JWT</span><span class="o">.</span><span class="na">create</span><span class="o">()</span>
+                    <span class="o">.</span><span class="na">withSubject</span><span class="o">(</span><span class="s">"cos Token"</span><span class="o">)</span>
+                    <span class="o">.</span><span class="na">withExpiresAt</span><span class="o">(</span><span class="k">new</span> <span class="nc">Date</span><span class="o">(</span><span class="nc">System</span><span class="o">.</span><span class="na">currentTimeMillis</span><span class="o">()</span> <span class="o">+</span> <span class="o">(</span><span class="mi">600000</span> <span class="o">*</span> <span class="mi">10</span><span class="o">)))</span>
+                    <span class="o">.</span><span class="na">withClaim</span><span class="o">(</span><span class="s">"id"</span><span class="o">,</span> <span class="n">principalDetails</span><span class="o">.</span><span class="na">getUser</span><span class="o">().</span><span class="na">getId</span><span class="o">())</span>
+                    <span class="o">.</span><span class="na">withClaim</span><span class="o">(</span><span class="s">"username"</span><span class="o">,</span> <span class="n">principalDetails</span><span class="o">.</span><span class="na">getUser</span><span class="o">().</span><span class="na">getUsername</span><span class="o">())</span>
+                    <span class="o">.</span><span class="na">sign</span><span class="o">(</span><span class="nc">Algorithm</span><span class="o">.</span><span class="na">HMAC512</span><span class="o">(</span><span class="s">"cos"</span><span class="o">));</span>    <span class="c1">// 서버만 가지고 있는 ScreteKey</span>
+
+            <span class="n">response</span><span class="o">.</span><span class="na">addHeader</span><span class="o">(</span><span class="s">"Authorization"</span><span class="o">,</span> <span class="s">"Bearer "</span> <span class="o">+</span> <span class="n">jwtToken</span><span class="o">);</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+
+</pre></table></code></div></div><p>클라이언트가 로그인 후 서버에게 받은 response의 header에 Authorization이 들어있으면 제대로 JWT 토큰을 받아온 것이다. 이제 SecurityConfig에서 JWTAuthenticationFilter를 등록하자.</p><div class="language-java highlighter-rouge"><div class="code-header"> <span data-label-text="Java"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+</pre><td class="rouge-code"><pre>
+    <span class="c1">//SecurityConfig.java</span>
+    <span class="nd">@Configuration</span>
+    <span class="nd">@EnableWebSecurity</span>
+    <span class="nd">@RequiredArgsConstructor</span>
+    <span class="kd">public</span> <span class="kd">class</span> <span class="nc">SecurityConfig</span> <span class="kd">extends</span> <span class="nc">WebSecurityConfigurerAdapter</span> <span class="o">{</span>
+
+        <span class="kd">private</span> <span class="kd">final</span> <span class="nc">CorsConfig</span> <span class="n">corsConfig</span><span class="o">;</span>
+        
+        <span class="nd">@Override</span>
+        <span class="kd">protected</span> <span class="kt">void</span> <span class="nf">configure</span><span class="o">(</span><span class="nc">HttpSecurity</span> <span class="n">http</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">Exception</span> <span class="o">{</span>
+            <span class="n">http</span><span class="o">.</span><span class="na">addFilterBefore</span><span class="o">(</span><span class="k">new</span> <span class="nc">MyFilter</span><span class="o">(),</span> <span class="nc">BasicAuthenticationFilter</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+            <span class="n">http</span><span class="o">.</span><span class="na">csrf</span><span class="o">().</span><span class="na">disable</span><span class="o">();</span>
+            <span class="n">http</span><span class="o">.</span><span class="na">sessionManagement</span><span class="o">().</span><span class="na">sessionCreationPolicy</span><span class="o">(</span><span class="nc">SessionCreationPolicy</span><span class="o">.</span><span class="na">STATELESS</span><span class="o">)</span> <span class="c1">// 세션을 사용하지 않는다</span>
+                <span class="o">.</span><span class="na">and</span><span class="o">()</span>
+                <span class="o">.</span><span class="na">formLogin</span><span class="o">().</span><span class="na">disable</span><span class="o">()</span>
+                <span class="o">.</span><span class="na">httpBasic</span><span class="o">().</span><span class="na">disable</span><span class="o">()</span>
+                <span class="o">.</span><span class="na">addFilter</span><span class="o">(</span><span class="k">new</span> <span class="nc">JwtAuthenticationFilter</span><span class="o">(</span><span class="n">authenticationManager</span><span class="o">()))</span>
+                <span class="o">...</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+
+</pre></table></code></div></div><p>JwtAuthenticationFilter는 UsernamePasswordAuthenticationFilter를 상속받았기 때문에 바로 Security Filter Chain에 등록할 수 있다. 그리고 UUsernamePasswordAuthenticationFilter는 AuthenticationManager를 파라미터로 받기 때문에 JwtAuthenticationFilter를 생성할 때 authenticationManager()를 호출해 준다.(authenticationManger()는 WebSecurityConfigurerAdapter에 들어있다.)</p><h4 id="jwt-검증하기"><span class="mr-2">JWT 검증하기</span><a href="#jwt-검증하기" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h4></h4><p>로그인이 완료된 클라이언트가 권한이 필요한 페이지를 요청할 때 서버는 클라이언트의 JWT를 확인해서 해당 리소스에 접근할 권한이 있는지 확인해야 한다. 따라서 JWT 검증을 하기 위한 JWTAuthorizationFilter가 필요하다.</p><div class="language-java highlighter-rouge"><div class="code-header"> <span data-label-text="Java"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+</pre><td class="rouge-code"><pre>
+    <span class="c1">//JwtAuthrizationFilter.java</span>
+
+    <span class="c1">// 권한이나 인증이 필요한 주소에대한 요청이 오면</span>
+    <span class="c1">// BasicAuthenticationFilter를 거치게 된다.</span>
+    <span class="kd">public</span> <span class="kd">class</span> <span class="nc">JwtAuthorizationFilter</span> <span class="kd">extends</span> <span class="nc">BasicAuthenticationFilter</span> <span class="o">{</span>
+
+        <span class="kd">private</span> <span class="nc">UserRepository</span> <span class="n">userRepository</span><span class="o">;</span>
+
+        <span class="kd">public</span> <span class="nf">JwtAuthorizationFilter</span><span class="o">(</span><span class="nc">AuthenticationManager</span> <span class="n">authenticationManager</span><span class="o">,</span> <span class="nc">UserRepository</span> <span class="n">userRepository</span><span class="o">)</span> <span class="o">{</span>
+            <span class="kd">super</span><span class="o">(</span><span class="n">authenticationManager</span><span class="o">);</span>
+            <span class="k">this</span><span class="o">.</span><span class="na">userRepository</span> <span class="o">=</span> <span class="n">userRepository</span><span class="o">;</span>
+        <span class="o">}</span>
+
+        <span class="nd">@Override</span>
+        <span class="kd">protected</span> <span class="kt">void</span> <span class="nf">doFilterInternal</span><span class="o">(</span><span class="nc">HttpServletRequest</span> <span class="n">request</span><span class="o">,</span> <span class="nc">HttpServletResponse</span> <span class="n">response</span><span class="o">,</span> <span class="nc">FilterChain</span> <span class="n">chain</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">IOException</span><span class="o">,</span> <span class="nc">ServletException</span> <span class="o">{</span>
+            
+            <span class="nc">String</span> <span class="n">jwtHeader</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="na">getHeader</span><span class="o">(</span><span class="s">"Authorization"</span><span class="o">);</span>
+            <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"jwtHeader: "</span> <span class="o">+</span> <span class="n">jwtHeader</span><span class="o">);</span>
+
+            <span class="c1">// header가 있는지 확인</span>
+            <span class="k">if</span><span class="o">(</span><span class="n">jwtHeader</span> <span class="o">==</span> <span class="kc">null</span> <span class="o">||</span> <span class="o">!</span><span class="n">jwtHeader</span><span class="o">.</span><span class="na">startsWith</span><span class="o">(</span><span class="s">"Bearer"</span><span class="o">))</span> <span class="o">{</span>
+                <span class="n">chain</span><span class="o">.</span><span class="na">doFilter</span><span class="o">(</span><span class="n">request</span><span class="o">,</span> <span class="n">response</span><span class="o">);</span>
+                <span class="k">return</span><span class="o">;</span>
+            <span class="o">}</span>
+
+            <span class="c1">// JWT 토큰을 검증해서 권한이 있는지 확인</span>
+            <span class="nc">String</span> <span class="n">jwtToken</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="na">getHeader</span><span class="o">(</span><span class="s">"Authorization"</span><span class="o">).</span><span class="na">replace</span><span class="o">(</span><span class="s">"Bearer "</span><span class="o">,</span><span class="s">""</span><span class="o">);</span>
+            <span class="nc">String</span> <span class="n">username</span> <span class="o">=</span> <span class="no">JWT</span><span class="o">.</span><span class="na">require</span><span class="o">(</span><span class="nc">Algorithm</span><span class="o">.</span><span class="na">HMAC512</span><span class="o">(</span><span class="s">"cos"</span><span class="o">)).</span><span class="na">build</span><span class="o">().</span><span class="na">verify</span><span class="o">(</span><span class="n">jwtToken</span><span class="o">).</span><span class="na">getClaim</span><span class="o">(</span><span class="s">"username"</span><span class="o">).</span><span class="na">asString</span><span class="o">();</span>
+
+            <span class="c1">// 서명이 정상적으로 됬다면</span>
+            <span class="k">if</span><span class="o">(</span><span class="n">username</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+                <span class="nc">User</span> <span class="n">userEntity</span> <span class="o">=</span> <span class="n">userRepository</span><span class="o">.</span><span class="na">findByUsername</span><span class="o">(</span><span class="n">username</span><span class="o">);</span>
+
+                <span class="nc">PrincipalDetails</span> <span class="n">principalDetails</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">PrincipalDetails</span><span class="o">(</span><span class="n">userEntity</span><span class="o">);</span>
+
+                <span class="c1">// JWT 서명을 통해서 서명이 정상일 경우 Authentication 객체를 만들어 준다.</span>
+                <span class="nc">Authentication</span> <span class="n">authentication</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">UsernamePasswordAuthenticationToken</span><span class="o">(</span><span class="n">principalDetails</span><span class="o">,</span> <span class="kc">null</span><span class="o">,</span> <span class="n">principalDetails</span><span class="o">.</span><span class="na">getAuthorities</span><span class="o">());</span>
+
+                <span class="c1">// 강제로 시큐리티 세션에 접근하여 Authentication 객체를 저장</span>
+                <span class="nc">SecurityContextHolder</span><span class="o">.</span><span class="na">getContext</span><span class="o">().</span><span class="na">setAuthentication</span><span class="o">(</span><span class="n">authentication</span><span class="o">);</span>
+            <span class="o">}</span>
+            <span class="n">chain</span><span class="o">.</span><span class="na">doFilter</span><span class="o">(</span><span class="n">request</span><span class="o">,</span> <span class="n">response</span><span class="o">);</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+
+</pre></table></code></div></div><p>JWT를 전달받은 서버는 이 토큰이 유효한지를 확인해야 한다. JWT 서명을 통해 토큰의 유효성을 검증할 수 있으며, 코드에서 <strong><em>JWT.require(Algorithm.HMAC512(“cos”)).build().verify(jwtToken)</em></strong> 이 부분이 된다. 검증이 성공하면 username을 통해 유저정보를 조회할 수 있다. 조회된 유저 정보를 토대로 Authentication 객체를 만들어 주고, 해당 객체를 SecurityContextHolder에 넣어주면 해당 유저에 대한 인증이 끝나게 된다. 이후 chain.doFilter()를 통해 다음 SecurityFilter로 요청을 넘겨주면 시큐리티에 의해 권한을 확인하고 응답을 보내준다.</p><p>이제 JwtAuthorizationFilter를 Security Filter Chain에 등록해 주면 된다.</p><div class="language-java highlighter-rouge"><div class="code-header"> <span data-label-text="Java"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+</pre><td class="rouge-code"><pre>
+    <span class="c1">//SecurityConfig.java</span>
+    <span class="nd">@Configuration</span>
+    <span class="nd">@EnableWebSecurity</span>
+    <span class="nd">@RequiredArgsConstructor</span>
+    <span class="kd">public</span> <span class="kd">class</span> <span class="nc">SecurityConfig</span> <span class="kd">extends</span> <span class="nc">WebSecurityConfigurerAdapter</span> <span class="o">{</span>
+
+        <span class="kd">private</span> <span class="kd">final</span> <span class="nc">CorsConfig</span> <span class="n">corsConfig</span><span class="o">;</span>
+        <span class="kd">private</span> <span class="kd">final</span> <span class="nc">UserRepository</span> <span class="n">userRepository</span><span class="o">;</span>
+
+        <span class="nd">@Override</span>
+        <span class="kd">protected</span> <span class="kt">void</span> <span class="nf">configure</span><span class="o">(</span><span class="nc">HttpSecurity</span> <span class="n">http</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">Exception</span> <span class="o">{</span>
+            <span class="n">http</span><span class="o">.</span><span class="na">addFilterBefore</span><span class="o">(</span><span class="k">new</span> <span class="nc">MyFilter</span><span class="o">(),</span> <span class="nc">BasicAuthenticationFilter</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+            <span class="n">http</span><span class="o">.</span><span class="na">csrf</span><span class="o">().</span><span class="na">disable</span><span class="o">();</span>
+            <span class="n">http</span><span class="o">.</span><span class="na">sessionManagement</span><span class="o">().</span><span class="na">sessionCreationPolicy</span><span class="o">(</span><span class="nc">SessionCreationPolicy</span><span class="o">.</span><span class="na">STATELESS</span><span class="o">)</span> <span class="c1">// 세션을 사용하지 않는다</span>
+                <span class="o">.</span><span class="na">and</span><span class="o">()</span>
+                <span class="o">.</span><span class="na">formLogin</span><span class="o">().</span><span class="na">disable</span><span class="o">()</span>
+                <span class="o">.</span><span class="na">httpBasic</span><span class="o">().</span><span class="na">disable</span><span class="o">()</span>
+                <span class="o">.</span><span class="na">addFilter</span><span class="o">(</span><span class="k">new</span> <span class="nc">JwtAuthenticationFilter</span><span class="o">(</span><span class="n">authenticationManager</span><span class="o">()))</span>
+                <span class="o">.</span><span class="na">addFilter</span><span class="o">(</span><span class="k">new</span> <span class="nc">JwtAuthorizationFilter</span><span class="o">(</span><span class="n">authenticationManager</span><span class="o">(),</span> <span class="n">userRepository</span><span class="o">))</span>
+                <span class="o">...</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+
+</pre></table></code></div></div><p>JWT의 장점은 역시 Stateless에 있는 것 같다. 서버는 유저가 로그인이 된건지 안된건지 별도로 세션에 ID를 저장하지 않는다. 다만 클라이언트가 API 요청을 할 경우 서버에서 발급받은 JWT를 같이 보내고, 서버는 JWT의 유효성을 서명이라는 것을 통해 확인한다. 서버는 Security를 통해서 해당 클라이언트의 권한 처리를 하며, 이 때 JWT Claim에 들어있는 클라이언트의 username을 통해 Authentication을 만들어 주고 SecurityContextHoler에 Authentication을 넣어줌으로써 해당 요청은 인증된 요청으로 처리된다.</p><hr /><p><strong>Youtube 메타코딩 선생님 JWT 강의내용 정리 (Inflearn으로도 볼 수 있음)</strong></p></div><div class="post-tail-wrapper text-muted"><div class="post-meta mb-3"> <i class="far fa-folder-open fa-fw mr-1"></i> <a href='/categories/spring-boot/'>Spring boot</a></div><div class="post-tags"> <i class="fa fa-tags fa-fw mr-1"></i> <a href="/tags/spring-boot/" class="post-tag no-text-decoration" >spring boot</a> <a href="/tags/jwt/" class="post-tag no-text-decoration" >JWT</a></div><div class="post-tail-bottom d-flex justify-content-between align-items-center mt-3 pt-5 pb-2"><div class="license-wrapper"> This post is licensed under <a href="https://creativecommons.org/licenses/by/4.0/"> CC BY 4.0 </a> by the author.</div><div class="share-wrapper"> <span class="share-label text-muted mr-1">Share</span> <span class="share-icons"> <a href="https://twitter.com/intent/tweet?text=Spring boot로 JWT 사용하기 - Roypapa&amp;url=https://ryouzhe.github.io/posts/springboot-jwt/" data-toggle="tooltip" data-placement="top" title="Twitter" target="_blank" rel="noopener" aria-label="Twitter"> <i class="fa-fw fab fa-twitter"></i> </a> <a href="https://www.facebook.com/sharer/sharer.php?title=Spring boot로 JWT 사용하기 - Roypapa&amp;u=https://ryouzhe.github.io/posts/springboot-jwt/" data-toggle="tooltip" data-placement="top" title="Facebook" target="_blank" rel="noopener" aria-label="Facebook"> <i class="fa-fw fab fa-facebook-square"></i> </a> <a href="https://t.me/share/url?url=https://ryouzhe.github.io/posts/springboot-jwt/&amp;text=Spring boot로 JWT 사용하기 - Roypapa" data-toggle="tooltip" data-placement="top" title="Telegram" target="_blank" rel="noopener" aria-label="Telegram"> <i class="fa-fw fab fa-telegram"></i> </a> <i id="copy-link" class="fa-fw fas fa-link small" data-toggle="tooltip" data-placement="top" title="Copy link" data-title-succeed="Link copied successfully!"> </i> </span></div></div></div><script src="https://utteranc.es/client.js" repo="ryouzhe/ryouzhe.github.io" issue-term="pathname" theme="github-light" crossorigin="anonymous" async> </script></div></div><div id="panel-wrapper" class="col-xl-3 pl-2 text-muted"><div class="access"><div id="access-lastmod" class="post"><div class="panel-heading">Recently Updated</div><ul class="post-content pl-0 pb-1 ml-1 mt-2"><li><a href="/posts/C-02/">C# Class 01</a><li><a href="/posts/C-03/">C# Class 02</a><li><a href="/posts/C-04/">C# Class 03</a><li><a href="/posts/C-01/">C# Nullable Type</a><li><a href="/posts/JPA-MyBatis/">JPA와 MyBatis</a></ul></div><div id="access-tags"><div class="panel-heading">Trending Tags</div><div class="d-flex flex-wrap mt-3 mb-1 mr-3"> <a class="post-tag" href="/tags/javascript/">javascript</a> <a class="post-tag" href="/tags/react/">react</a> <a class="post-tag" href="/tags/c/">C#</a> <a class="post-tag" href="/tags/hooks/">hooks</a> <a class="post-tag" href="/tags/spring-boot/">spring boot</a> <a class="post-tag" href="/tags/gitblog/">gitblog</a> <a class="post-tag" href="/tags/jwt/">JWT</a> <a class="post-tag" href="/tags/security/">security</a> <a class="post-tag" href="/tags/ajax/">ajax</a> <a class="post-tag" href="/tags/deploy/">deploy</a></div></div></div><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@1.0.1/dist/bootstrap-toc.min.js"></script><div id="toc-wrapper" class="pl-0 pr-4 mb-5"><div class="panel-heading pl-3 pt-2 mb-2">Contents</div><nav id="toc" data-toggle="toc"></nav></div></div></div><div class="row"><div class="col-12 col-lg-11 col-xl-8"><div id="tail-wrapper" class="pl-1 pr-1 pl-sm-2 pr-sm-2 pl-md-4 pr-md-4"><div id="related-posts" class="mt-5 mb-2 mb-sm-4"><h3 class="pt-2 mt-1 mb-4 ml-1" data-toc-skip>Further Reading</h3><div class="card-deck mb-4"><div class="card"> <a href="/posts/session-jwt/"><div class="card-body"> <em class="timeago small" data-ts="1648652400" > 2022-03-31 </em><h3 class="pt-0 mt-1 mb-3" data-toc-skip>Session and JWT</h3><div class="text-muted small"><p> 웹 서비스는 서비스를 이용하는 클라이언트와 서비스를 제공하는 서버로 이루어 진다. 클라이언트는 서버에 요청을 보내고 서버는 클라이언트에게 응답을 보낸다. 서버는 클라이언트가 요청한 모든 요청에 응답을 보낼까? 서버는 클라이언트를 식별해서 해당 클라이언트의 요청을 처리해야 한다. 이 과정을 Authentication(인증) 이라 한다. 인증을 위해서 ...</p></div></div></a></div><div class="card"> <a href="/posts/security-01/"><div class="card-body"> <em class="timeago small" data-ts="1648566000" > 2022-03-30 </em><h3 class="pt-0 mt-1 mb-3" data-toc-skip>Spring Security 01. 스프링 시큐리티 아키텍처</h3><div class="text-muted small"><p> Spring Security는 인증, 인가에 대한 커스텀이 가능한 access-control framework 이다. Spring Security는 Spring 기반 어플리케이션을 보호하기 위한 표준 framework이다. Spring Security를 사용하는 방법은 SecurityConfig 클래스를 통해 인증 및 인가에 대한 내용을 커스텀하고,...</p></div></div></a></div><div class="card"> <a href="/posts/security-02/"><div class="card-body"> <em class="timeago small" data-ts="1648652400" > 2022-03-31 </em><h3 class="pt-0 mt-1 mb-3" data-toc-skip>Spring Security 02. Login</h3><div class="text-muted small"><p> Security 설정 Spring Security는 WebSecurityConfigurerAdapter 를 상속받아 Security 설정을 할 수 있다. @Configuration @EnableWebSecurity // 스프링 시큐리티 필터가 스프링 필터체인에 등록됨 public class SecurityConfig ext...</p></div></div></a></div></div></div><div class="post-navigation d-flex justify-content-between"> <a href="/posts/session-jwt/" class="btn btn-outline-primary" prompt="Older"><p>Session and JWT</p></a> <a href="/posts/javascript-01/" class="btn btn-outline-primary" prompt="Newer"><p>Javascript 변수</p></a></div></div></div></div><footer class="d-flex w-100 justify-content-center"><div class="d-flex justify-content-between align-items-center text-muted"><div class="footer-left"><p class="mb-0"> © 2024 <a href="https://github.com/ryouzhe">Roypapa</a>. <span data-toggle="tooltip" data-placement="top" title="Except where otherwise noted, the blog posts on this site are licensed under the Creative Commons Attribution 4.0 International (CC BY 4.0) License by the author.">Some rights reserved.</span></p></div><div class="footer-right"><p class="mb-0"> Powered by <a href="https://jekyllrb.com" target="_blank" rel="noopener">Jekyll</a> with <a href="https://github.com/cotes2020/jekyll-theme-chirpy" target="_blank" rel="noopener">Chirpy</a> theme.</p></div></div></footer></div><div id="search-result-wrapper" class="d-flex justify-content-center unloaded"><div class="col-12 col-sm-11 post-content"><div id="search-hints"><div id="access-tags"><div class="panel-heading">Trending Tags</div><div class="d-flex flex-wrap mt-3 mb-1 mr-3"> <a class="post-tag" href="/tags/javascript/">javascript</a> <a class="post-tag" href="/tags/react/">react</a> <a class="post-tag" href="/tags/c/">C#</a> <a class="post-tag" href="/tags/hooks/">hooks</a> <a class="post-tag" href="/tags/spring-boot/">spring boot</a> <a class="post-tag" href="/tags/gitblog/">gitblog</a> <a class="post-tag" href="/tags/jwt/">JWT</a> <a class="post-tag" href="/tags/security/">security</a> <a class="post-tag" href="/tags/ajax/">ajax</a> <a class="post-tag" href="/tags/deploy/">deploy</a></div></div></div><div id="search-results" class="d-flex flex-wrap justify-content-center text-muted mt-3"></div></div></div></div><div id="mask"></div><a id="back-to-top" href="#" aria-label="back-to-top" class="btn btn-lg btn-box-shadow" role="button"> <i class="fas fa-angle-up"></i> </a> <script src="https://cdn.jsdelivr.net/npm/simple-jekyll-search@1.10.0/dest/simple-jekyll-search.min.js"></script> <script> SimpleJekyllSearch({ searchInput: document.getElementById('search-input'), resultsContainer: document.getElementById('search-results'), json: '/assets/js/data/search.json', searchResultTemplate: '<div class="pl-1 pr-1 pl-sm-2 pr-sm-2 pl-lg-4 pr-lg-4 pl-xl-0 pr-xl-0"> <a href="{url}">{title}</a><div class="post-meta d-flex flex-column flex-sm-row text-muted mt-1 mb-1"> {categories} {tags}</div><p>{snippet}</p></div>', noResultsText: '<p class="mt-5">Oops! No result founds.</p>', templateMiddleware: function(prop, value, template) { if (prop === 'categories') { if (value === '') { return `${value}`; } else { return `<div class="mr-sm-4"><i class="far fa-folder fa-fw"></i>${value}</div>`; } } if (prop === 'tags') { if (value === '') { return `${value}`; } else { return `<div><i class="fa fa-tag fa-fw"></i>${value}</div>`; } } } }); </script> <script src="https://cdn.jsdelivr.net/combine/npm/magnific-popup@1/dist/jquery.magnific-popup.min.js,npm/lozad/dist/lozad.min.js,npm/clipboard@2/dist/clipboard.min.js"></script> <script src="https://cdn.jsdelivr.net/combine/npm/dayjs@1/dayjs.min.js,npm/dayjs@1/locale/en.min.js,npm/dayjs@1/plugin/relativeTime.min.js,npm/dayjs@1/plugin/localizedFormat.min.js"></script> <script defer src="/assets/js/dist/post.min.js"></script> <script src="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/js/bootstrap.bundle.min.js"></script> <script defer src="/app.js"></script> <script async src="https://www.googletagmanager.com/gtag/js?id=G-BJZJL6PC9R"></script> <script> window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'G-BJZJL6PC9R'); </script>
